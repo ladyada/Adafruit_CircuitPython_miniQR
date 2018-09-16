@@ -27,7 +27,17 @@ def print_QR(matrix):
             out.write(WHITE)
         print()
 
-qr = adafruit_miniqr.QRCode(3, pyqrnative.H)
+qr = adafruit_miniqr.QRCode(qr_type=3,error_correct=adafruit_miniqr.L)
 qr.addData(b'https://www.adafruit.com')
 qr.make()
+matrix = qr.matrix
+
+import hashlib
+matrix_s = str(matrix)
+print(matrix_s)
+hashed = hashlib.md5(matrix_s.encode('utf-8')).hexdigest()
+print(hashed)
+if hashed != "0b8bf742f2286bc360bf585076aa39ac":
+    raise Exception("wrong hash")
+
 print_QR(qr.matrix)
